@@ -31,10 +31,11 @@ def convertDateToDatetime(nflDF):
 	nflDF.Date = pd.to_datetime(nflDF.Date)
 
 def createModelingDF():
+    # only interested in Pass and Run plays/rows
     nflDF = nflDF[nflDF.PlayType.isin(['Pass', 'Run'])]
+    # create target feature
     playType = nflDF[['PlayType']]
-    playType.replace('Pass', 1, inplace=True)
-    playType.replace('Run', 0, inplace=True)
+    playType.replace(['Pass', 'Run'],[1, 0], inplace=True)
     playType.reset_index(inplace=True, drop=True)
 
     homeTeamDummy = pd.get_dummies(nflDF.HomeTeam)
